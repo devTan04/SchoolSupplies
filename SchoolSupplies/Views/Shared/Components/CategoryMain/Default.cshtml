@@ -1,0 +1,13 @@
+﻿@model List<SchoolSupplies.Models.Entities.Category>
+
+<div class="sidebar__item">
+    <h4>Department</h4>
+    <ul>
+        @foreach (var category in Model)
+        {
+            <li><a href="@Url.Action("Index", new { id = category.CategoryId })">@category.CategoryName</a></li>
+        }
+    </ul>
+</div>
+
+@await Component.InvokeAsync("Price")

@@ -1,0 +1,22 @@
+﻿@model List<SchoolSupplies.Models.Entities.Product>
+<div class="col-lg-4 col-md-6">
+    <div class="latest-product__text">
+        <h4>Hot Products</h4>
+        <div class="latest-product__slider owl-carousel">
+            @foreach (var product in Model)
+            {
+                <div class="latest-prdouct__slider__item">
+                    <a asp-controller="ProductDetails" asp-action="Details" asp-route-id="@product.ProductId" class="latest-product__item">
+                        <div class="latest-product__item__pic">
+                            <img src="~/uploads/@product.ProductUrlImageMain" alt="">
+                        </div>
+                        <div class="latest-product__item__text">
+                            <h6>@product.ProductName</h6>
+                            <span>@product.ProductPrice.ToString("C")</span>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

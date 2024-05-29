@@ -1,0 +1,36 @@
+﻿@model double[]
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="monthly-revenue-chart" width="400" height="200"></canvas>
+
+<script>
+    var revenueData = {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+            label: 'Monthly Revenue',
+            data: @Html.Raw(Json.Serialize(Model)),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Lấy thẻ canvas
+    var ctx = document.getElementById('monthly-revenue-chart').getContext('2d');
+
+    // Vẽ biểu đồ
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: revenueData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>

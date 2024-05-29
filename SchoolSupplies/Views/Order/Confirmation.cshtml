@@ -1,0 +1,44 @@
+﻿@model SchoolSupplies.Models.Entities.Order
+
+@{
+    ViewData["Title"] = "Confirmation";
+    Layout = "~/Views/Shared/CreateOrder.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Order Information</h2>
+            <div class="order-info">
+                <p><strong>Order ID:</strong> @Model.OrderId</p>
+                <p><strong>Invoice creation date:</strong> @Model.OrderDate.ToShortDateString()</p>
+                <p><strong>Order Status:</strong> @Model.OrderStatus</p>
+                <p><strong>Order Total:</strong> @Model.OrderTotal.ToString("C")</p>
+            </div>
+            <div class="order-details">
+                <h4>Order Details</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>@detail.Product.ProductName</td>
+                                <td>@detail.Quantity</td>
+                                <td>@detail.Price.ToString("C")</td>
+                                <td>@detail.Total.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

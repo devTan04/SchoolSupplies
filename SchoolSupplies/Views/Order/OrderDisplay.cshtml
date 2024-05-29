@@ -1,0 +1,82 @@
+﻿@model List<SchoolSupplies.Models.Entities.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "~/Views/Shared/CreateOrder.cshtml";
+}
+<style>
+    .status-pending {
+        color: red;
+    }
+
+    .status-confirmed {
+        color: yellow;
+    }
+
+    .status-received {
+        color: green;
+    }
+</style>
+
+<div class="container">
+    <h2>My Orders</h2>
+    @if (Model.Count == 0)
+    {
+        <p>You have no orders.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order Date</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderDate.ToString("yyyy-MM-dd")</td>
+                        <td>@order.OrderPhoneNumber</td>
+                        <td>@order.OrderAddress</td>
+                        <td>@order.OrderFirstName</td>
+                        <td>@order.OrderLastName</td>
+                        <td>@order.OrderTotal.ToString("C")</td>
+                        <td>
+                            @if (order.OrderStatus == "Pending")
+                            {
+                                <span class="status-pending">Waiting for Confirmation</span>
+                            }
+                            else if (order.OrderStatus == "Confirmed")
+                            {
+                                <span class="status-confirmed">Being Shipped</span>
+                                @if (order.OrderStatus != "Received")
+                                {
+                                    <form asp-controller="Order" asp-action="ReceiveOrder">
+                                        <input type="hidden" name="orderId" value="@order.OrderId" />
+                                        <button type="submit" class="btn btn-success">Confirm Receipt</button>
+                                    </form>
+                                }
+                            }
+                            else if (order.OrderStatus == "Received")
+                            {
+                                <span class="status-received">Received</span>
+                             
+                            }
+                        </td>
+                        <td>
+                            <a asp-controller="Order" asp-action="OrderDetail" asp-route-id="@order.OrderId" class="btn btn-primary">View Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,153 @@
+﻿@model List<SchoolSupplies.Models.OrderHomeViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+    .status-pending {
+        color: red;
+    }
+
+    .status-confirmed {
+        color: yellow;
+    }
+
+    .status-received {
+        color: green;
+    }
+</style>
+<div id="main">
+    <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+            <i class="bi bi-justify fs-3"></i>
+        </a>
+    </header>
+
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>DataTable Order</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="DashBoardStaff" asp-action="DashBoard">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">DataTable Order</li>
+                        </ol>
+                    </nav>
+                </div>
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div id="successMessage" class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                @if (TempData["WarningMessage"] != null)
+                {
+                    <div id="warningMessage" class="alert alert-warning">
+                        @TempData["WarningMessage"]
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div id="errorMessage" class="alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+            </div>
+        </div>
+        <section class="section">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Order Date</th>
+                                    <th>Customer Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Address</th>
+                                    <th>Total</th>
+                                    <th>Order Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model == null)
+                                {
+                                    <tr>
+                                        <td>No date</td>
+                                        <td>No date</td>
+                                        <td>No date</td>
+                                        <td>No date</td>
+                                        <td>No date</td>
+                                        <td>No date</td>
+                                        <td>No date</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>@order.OrderDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@order.FullName</td>
+                                            <td>@order.OrderPhoneNumber</td>
+                                            <td>@order.OrderAddress</td>
+                                            <td>@order.OrderTotal.ToString("C")</td>
+                                            <td>
+                                                @if (order.OrderStatus == "Pending")
+                                                {
+                                                    <span class="status-pending">Waiting for Confirmation</span>
+                                                    <form asp-controller="Order" asp-action="ConfirmOrder">
+                                                        <input type="hidden" name="orderId" value="@order.OrderId" />
+                                                        <button type="submit" class="btn btn-success">Confirm</button>
+                                                    </form>
+                                                }
+                                                else if (order.OrderStatus == "Confirmed")
+                                                {
+                                                    <span class="status-confirmed">Being Shipped</span>
+                                                   
+                                                }
+                                                else if (order.OrderStatus == "Received")
+                                                {
+                                                    <span class="status-received">Received</span>
+
+                                                }
+                                            </td>
+
+                                            <td>
+                                                <a asp-controller="Order" asp-action="OrderHomeDetail" asp-route-id="@order.OrderId" class="btn btn-primary">View Details</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        hideMessage("successMessage", 1000); // ẩn thông báo thành công sau 1 giây
+        hideMessage("warningMessage", 2000); // ẩn thông báo cảnh báo sau 2 giây
+        hideMessage("errorMessage", 3000); // ẩn thông báo lỗi sau 3 giây
+    });
+
+    function hideMessage(messageId, timeout) {
+        var message = document.getElementById(messageId);
+        if (message) {
+            setTimeout(function () {
+                message.style.display = "none";
+            }, timeout);
+        }
+    }
+</script>

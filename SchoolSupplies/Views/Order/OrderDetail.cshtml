@@ -1,0 +1,45 @@
+﻿@model List<SchoolSupplies.Models.OrderDetailViewModel>
+
+
+@{
+    ViewData["Title"] = "Order Detail";
+    Layout = "~/Views/Shared/CreateOrder.cshtml";
+}
+<div class="container">
+    <h2>Order Detail</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Full Name</th>
+                <th>Product Name</th>
+                <th>Product Image</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.FullName</td>
+                    <td>@item.ProductName</td>
+                    <td><img src="~/uploads/@item.ProductUrlImageMain" alt="Product Image" style="max-width: 100px;" /></td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Total.ToString("C")</td>
+                    <td> <!-- Thêm button Feedback -->
+                        @if (item.OrderStatus == "Received")
+                        {
+                            <a href="@Url.Action("Feedback", "Order", new { productId = item.ProductId })" class="btn btn-primary">Feedback</a>
+                            
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

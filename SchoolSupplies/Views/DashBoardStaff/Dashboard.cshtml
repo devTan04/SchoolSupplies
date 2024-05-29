@@ -1,0 +1,50 @@
+﻿@using System.Security.Claims
+@* @model SchoolSupplies.Models.AddCategoryViewModel *@
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div id="main">
+    <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+            <i class="bi bi-justify fs-3"></i>
+        </a>
+    </header>
+    <div class="page-heading">
+        <h3>Statistics</h3>
+    </div>
+    <div class="page-content">
+        <section class="row">
+            <div class="col-12 col-lg-9">
+                <div class="row">
+                    @await Component.InvokeAsync("NumberOfOrders")
+                    @await Component.InvokeAsync("NumberOfAccounts")
+                    @await Component.InvokeAsync("NumberOfSoldProducts")
+                    @await Component.InvokeAsync("NumberOfFeedback")
+                </div>
+                <div class="row">
+                    @await Component.InvokeAsync("MonthlyRevenue")
+                </div>
+
+                <div class="row">
+                    @await Component.InvokeAsync("TopProductsSold")
+                </div>
+            </div>
+            <div class="col-12 col-lg-3">
+                <div class="card">
+                    <div class="card-body py-4 px-4">
+
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <h6 class="text-muted mb-0">@User.FindFirst(ClaimTypes.Email)?.Value</h6>
+                        }
+
+
+                    </div>
+                </div>
+                @await Component.InvokeAsync("AccountByGender")
+            </div>
+        </section>
+    </div>
+</div>

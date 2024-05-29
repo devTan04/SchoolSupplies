@@ -1,0 +1,41 @@
+﻿@model IEnumerable<SchoolSupplies.Models.ProductVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Shop.cshtml";
+}
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-7">
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>@Model.Count()</span> Products found</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    @foreach (var items in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/uploads/" + items.ProductImage)">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@items.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a asp-controller="ProductDetails" asp-action="Details" asp-route-id="@items.Id">@items.ProductName</a></h6>
+                                    <h5>$@items.ProductPrice</h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

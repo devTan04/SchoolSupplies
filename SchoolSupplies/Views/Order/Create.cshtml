@@ -1,0 +1,81 @@
+﻿@model SchoolSupplies.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "CreateOrder";
+    Layout = "~/Views/Shared/CreateOrder.cshtml";
+}
+
+<section class="checkout spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+            </div>
+        </div>
+        <div class="checkout__form">
+            <h4>Billing Details</h4>
+            <form asp-asp-controller="Order" asp-action="Create" method="post">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>First Name<span>*</span></p>
+                                    <input type="text" name="OrderFirstName" required>
+                                </div>
+                                <span asp-validation-for="OrderFirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Last Name<span>*</span></p>
+                                    <input type="text" name="OrderLastName" required>
+                                </div>
+                                <span asp-validation-for="OrderLastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Address<span>*</span></p>
+                            <input type="text" name="OrderAddress" placeholder="Street Address" class="checkout__input__add" required>
+                            <span asp-validation-for="OrderAddress" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Phone<span>*</span></p>
+                                    <input type="text" name="OrderPhoneNumber" required>
+                                </div>
+                                <span asp-validation-for="OrderPhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4>Your Order</h4>
+                            <div class="checkout__order__products">Products <span>Total</span></div>
+                            <ul>
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <li>@item.ProductName <span>@item.Price.ToString("C")</span></li>
+                                }
+                            </ul>
+                            <div class="checkout__order__subtotal">Subtotal <span>@Model.CartItems.Sum(item => item.Price).ToString("C")</span></div>
+                            <div class="checkout__order__total">Total <span>@Model.CartItems.Sum(item => item.Price).ToString("C")</span></div>
+@*                             <div class="checkout__input__checkbox">
+                                <label for="paypal">
+                                    Payment on delivery
+                                    <input type="checkbox" id="paypal">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div> *@
+                            <input type="hidden" name="CartItems" value="@Model.CartItems" />
+                            <button type="submit" class="site-btn">PLACE ORDER</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

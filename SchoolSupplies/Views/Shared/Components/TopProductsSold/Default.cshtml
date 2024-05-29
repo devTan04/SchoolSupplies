@@ -1,0 +1,36 @@
+﻿@model List<dynamic>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="top-products-chart" width="400" height="200"></canvas>
+
+<script>
+    var productData = {
+        labels: @Html.Raw(Json.Serialize(Model.Select(x => x.ProductName).ToList())),
+        datasets: [{
+            label: 'Quantity Sold',
+            data: @Html.Raw(Json.Serialize(Model.Select(x => x.Quantity).ToList())),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Lấy thẻ canvas
+    var ctx = document.getElementById('top-products-chart').getContext('2d');
+
+    // Vẽ biểu đồ
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: productData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>

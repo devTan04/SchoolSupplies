@@ -1,0 +1,109 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model SchoolSupplies.Models.AddUserViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/Register.cshtml";
+}
+<div id="auth">
+    <div class="row h-100">
+        <div class="col-lg-5 col-12">
+            <div id="auth-left">
+                <h1 class="auth-title">Sign Up</h1>
+                <p class="auth-subtitle mb-5">Input your data to register to our website.</p>
+
+                <form class="form" asp-controller="DashBoardShopOwner" asp-action="Register" method="post">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div id="successMessage" class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    @if (TempData["WarningMessage"] != null)
+                    {
+                        <div id="warningMessage" class="alert alert-warning">
+                            @TempData["WarningMessage"]
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div id="errorMessage" class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+                    <div class="form-group position-relative has-icon-left mb-4">
+                        <input type="text" class="form-control form-control-xl" placeholder="Email" asp-for="UserEmail">
+                        <div class="form-control-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group position-relative has-icon-left mb-4">
+                        <input type="text" class="form-control form-control-xl" placeholder="Username" asp-for="UserName">
+                        <div class="form-control-icon">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group position-relative has-icon-left mb-4">
+                        <input type="password" class="form-control form-control-xl" placeholder="Password" asp-for="Password">
+                        <div class="form-control-icon">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group position-relative has-icon-left mb-4">
+                        <input type="password" class="form-control form-control-xl" placeholder="Confirm Password" asp-for="ConfirmPassword">
+                        <div class="form-control-icon">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label class="d-block">Gender:</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="genderMale" value="Male" asp-for="Gender">
+                            <label class="form-check-label" for="genderMale">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="genderFemale" value="Female" asp-for="Gender">
+                            <label class="form-check-label" for="genderFemale">Female</label>
+                        </div>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="submit">Sign Up</button>
+                </form>
+                <div class="text-center mt-5 text-lg fs-4">
+                    <p class='text-gray-600'>
+                        Already have an account? <a asp-action="Login" asp-controller="Access" class="font-bold">Log in</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 d-none d-lg-block">
+            <div id="auth-right"></div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        hideMessage("successMessage", 1000); // ẩn thông báo thành công sau 1 giây
+        hideMessage("warningMessage", 2000); // ẩn thông báo cảnh báo sau 2 giây
+        hideMessage("errorMessage", 3000); // ẩn thông báo lỗi sau 3 giây
+    });
+
+    function hideMessage(messageId, timeout) {
+        var message = document.getElementById(messageId);
+        if (message) {
+            setTimeout(function () {
+                message.style.display = "none";
+            }, timeout);
+        }
+    }
+</script>

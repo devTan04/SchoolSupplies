@@ -1,0 +1,182 @@
+﻿@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ogani | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+
+    <link rel="stylesheet" href="~/User/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/User/css/style.css" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#"><img src="~/User/img/Logo.png" alt=""></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+            </ul>
+        </div>
+        @*         <div class="humberger__menu__widget">
+        <div class="header__top__right__auth">
+        <a href="#"><i class="fa fa-user"></i> Login</a>
+        </div>
+        </div> *@
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li class="active"><a asp-controller="Home" asp-action="Demo">Home</a></li>
+                <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
+                <li>
+                    <a asp-controller="Order" asp-action="OrderDisplay">Order</a>
+                </li>
+                <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="https://www.facebook.com/profile.php?id=100084560302098"><i class="fa fa-facebook"></i></a>
+        </div>
+    </div>
+    <!-- Humberger End -->
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__left">
+                            <ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><i class="fa fa-envelope"></i> @User.FindFirst(ClaimTypes.Email)?.Value</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="https://www.facebook.com/profile.php?id=100084560302098"><i class="fa fa-facebook"></i></a>
+                            </div>
+                            <div class="header__top__right__language">
+                                <img src="img/language.png" alt="">
+                                <div>English</div>
+                            </div>
+                            <div class="header__top__right__auth">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+
+                                    @if (User.IsInRole("Staff"))
+                                    {
+                                        <span class="d-inline-block"><a asp-controller="DashboardStaff" asp-action="Dashboard">Go to Staff page</a></span>
+                                    }
+                                    else if (User.IsInRole("Shop Owner"))
+                                    {
+                                        <span class="d-inline-block"><a asp-controller="DashboardShopOwner" asp-action="Dashboard">Go to Shop Owner page</a></span>
+                                    }
+                                    <span class="d-inline-block"><a asp-controller="Access" asp-action="Logout"><i class="fa fa-user"></i> Logout</a></span>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Access" asp-action="Login" class="d-inline-block"><i class="fa fa-user"></i> Login</a>
+                                    <a asp-controller="Access" asp-action="Register" class="d-inline-block">Register</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="#"><img src="~/User/img/Logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a asp-controller="Home" asp-action="Demo">Home</a></li>
+                            <li><a asp-controller="Shop" asp-action="Index">Shop</a></li>
+                            <li>
+                                <a asp-controller="Order" asp-action="OrderDisplay">Order</a>
+                            </li>
+                            <li><a asp-controller="Contact" asp-action="Index">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__cart">
+                        <ul>
+                            @* <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> *@
+                            @await Component.InvokeAsync("Cart")
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+    <!-- Hero Section Begin -->
+    @await Component.InvokeAsync("Category");
+    <!-- Hero Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    @await Component.InvokeAsync("Background");
+
+    <!-- Breadcrumb Section End -->
+    @RenderBody()
+
+    <!-- Product Section Begin -->
+    
+    <!-- Product Section End -->
+    <!-- Footer Section Begin -->
+    @await Component.InvokeAsync("Footer");
+    <!-- Footer Section End -->
+    <!-- Js Plugins -->
+    <script src="~/User/js/jquery-3.3.1.min.js"></script>
+    <script src="~/User/js/bootstrap.min.js"></script>
+    <script src="~/User/js/jquery.nice-select.min.js"></script>
+    <script src="~/User/js/jquery-ui.min.js"></script>
+
+    <script src="~/User/js/jquery.slicknav.js"></script>
+    <script src="~/User/js/mixitup.min.js"></script>
+    <script src="~/User/js/owl.carousel.min.js"></script>
+    <script src="~/User/js/main.js"></script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+
+</html>

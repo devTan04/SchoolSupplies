@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Product.cshtml";
+}
+
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        @if (Model.Product != null && !string.IsNullOrEmpty(Model.Product.ProductUrlImageMain))
+                        {
+                            <img class="product__details__pic__item--large"
+                                 src="@Url.Content("~/uploads/" + Model.Product.ProductUrlImageMain)" alt="@Model.ProductName">
+                        }
+                        else
+                        {
+                            <p>No image available</p>
+                        }
+                    </div>
+                    <div class="product__details__pic__slider owl-carousel">
+                        @if (Model.Images != null && Model.Images.Count > 0)
+                        {
+                            @foreach (var image in Model.Images)
+                            {
+                                if (image != null && !string.IsNullOrEmpty(image.SupImage))
+                                {
+                                    <div class="form-group">
+                                        <img src="~/uploads/@image.SupImage" alt="Sub Image" style="width: 100px; height: 100px;" />
+                                    </div>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <p>No sub-images available.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    @if (Model.Product != null)
+                    {
+                        <h3>@Model.Product.ProductName</h3>
+                        <div class="product__details__rating">
+                            <!-- Rating here if needed -->
+                        </div>
+                        <div class="product__details__price">$@Model.Product.ProductPrice</div>
+                        <p>@Model.Product.ProductDescription</p>
+                    }
+                    else
+                    {
+                        <h3>No product details available</h3>
+                    }
+                    <form asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Product.ProductId">
+                        <div class="product__details__quantity">
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input type="text" value="1" name="quantity">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="primary-btn">ADD TO CARD</button> <!-- Sử dụng button type="submit" thay vì a tag -->
+                    </form>
+@*                     <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> *@
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
+                               aria-selected="true">Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
+                               aria-selected="false">Rating</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Products Information</h6>
+                                @if (Model.Product != null)
+                                {
+                                    <p>@Model.Product.ProductDescription</p>
+                                }
+                                else
+                                {
+                                    <h3>No product details available</h3>
+                                }
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <div class="product__details__tab__desc">
+                                <h6>Rating</h6>
+                                @if (Model.Feedbacks != null && Model.Feedbacks.Count > 0)
+                                {
+                                    @foreach (var feedback in Model.Feedbacks)
+                                    {
+                                        <div class="feedback-item">
+                                            <p><strong>Email:</strong> @feedback.UserName</p>
+                                            <div class="rating">
+                                                @for (int i = 0; i < feedback.Rating; i++)
+                                                {
+                                                    <img src="~/User/star-full.png" alt="Star" />
+                                                }
+                                            </div>
+                                            <p><strong>Content:</strong> @feedback.Content</p>
+                                            <p><strong>Date:</strong> @feedback.Datatime.ToString("g")</p>
+                                            <hr />
+                                        </div>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <p>No feedback available.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

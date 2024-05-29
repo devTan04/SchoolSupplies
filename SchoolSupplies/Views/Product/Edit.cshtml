@@ -1,0 +1,145 @@
+﻿@model SchoolSupplies.Models.Entities.Product
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div id="main">
+    <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+            <i class="bi bi-justify fs-3"></i>
+        </a>
+    </header>
+    <div class="page-heading">
+        <div class="page-title">
+            <div class="row">
+                <div class="col-12 col-md-6 order-md-1 order-last">
+                    <h3>Update a Product</h3>
+                </div>
+                <div class="col-12 col-md-6 order-md-2 order-first">
+                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="DashBoardStaff" asp-action="DashBoard">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Update a Product</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <section id="multiple-column-form">
+            <div class="row match-height">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <form class="form" asp-controller="Product" asp-action="Edit" method="post" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="first-name-column">Product ID</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Input Category Name" asp-for="ProductId" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="first-name-column">Product Name</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Input Category Name" asp-for="ProductName">
+                                                <span asp-validation-for="ProductName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="first-name-column">Product Description</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Input Category Name" asp-for="ProductDescription">
+                                                <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="first-name-column">Product Price</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Input Category Name" asp-for="ProductPrice">
+                                                <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="first-name-column">Product Discount</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Input Category Name" asp-for="ProductDiscount">
+                                                <span asp-validation-for="ProductDiscount" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <label for="first-name-column">Product Image</label>
+                                            <input type="file" name="file" class="form-control" onchange="chooseFile(this)" accept="image/gif, image/jpeg, image/png" style="width: 100%">
+                                            <span asp-validation-for="ProductUrlImageMain" class="text-danger"></span>
+                                        </div>
+                                        <div>
+                                            <img style="height:200px;width:250px" id="image" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="first-name-column">Brand Name</label>
+                                            <select asp-for="BrandId" class="choices form-select">
+                                                <option value="">-- Select Brand --</option>
+                                                @if (ViewBag.BrandId != null)
+                                                {
+                                                    foreach (var item in ViewBag.BrandId)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <span asp-validation-for="BrandId" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="first-name-column">Category Name</label>
+                                            <select asp-for="CategoryId" class="choices form-select">
+                                                <option value="">-- Select Category --</option>
+                                                @if (ViewBag.CategoryId != null)
+                                                {
+                                                    foreach (var item in ViewBag.CategoryId)
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <input type="hidden" asp-for="ProductHot" />
+                                        <input type="hidden" asp-for="ProductLike" />
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Update</button>
+                                        <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
+                                        <a asp-action="List" class="btn btn-primary me-1 mb-1">Back to list</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    function chooseFile(fileInput) {
+        if (fileInput.files && fileInput.files[0]) {
+            var render = new FileReader();
+
+            render.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            render.readAsDataURL(fileInput.files[0]);
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        var imageUrl = "@ViewBag.ImageUrl";
+        var fileInput = document.querySelector('input[name="file"]');
+        fileInput.value = imageUrl;
+    });
+</script>

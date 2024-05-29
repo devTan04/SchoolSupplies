@@ -1,0 +1,116 @@
+﻿@model List<SchoolSupplies.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_LayoutCart.cshtml";
+}
+
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <h1>Cart</h1>
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <form asp-action="UpdateCart" method="post" id="cartForm">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Count; i++)
+                                {
+                                    var total = Model[i].Price * Model[i].Quantity; // Tính tổng trước khi hiển thị
+                                    <tr data-index="@i">
+                                        <td class="shoping__cart__item">
+                                            <img src="~/uploads/@Model[i].ProductImage" alt="" height="200px" width="200px">
+                                            <a asp-controller="ProductDetails" asp-action="Details" asp-route-id="@Model[i].ProductId"><h5>@Model[i].ProductName</h5></a>
+                                        </td>
+                                        <td class="shoping__cart__price">
+                                            @Model[i].Price.ToString("C")
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="updatedCart[@i].ProductId" value="@Model[i].ProductId" />
+                                            <input type="number" name="updatedCart[@i].Quantity" value="@Model[i].Quantity" class="quantity-input" data-price="@Model[i].Price" min="1" />
+                                        </td>
+                                        <td class="shoping__cart__total">
+                                            @total.ToString("C") 
+                                        </td>
+                                        <td class="shoping__cart__item__close">
+                                            <a asp-action="RemoveCart" asp-controller="Cart" asp-route-id="@Model[i].ProductId"><span class="icon_close"></span></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="shoping__cart__btns">
+                            <a asp-controller="Shop" asp-action="Index" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                            <button type="submit" class="primary-btn cart-btn cart-btn-right">
+                                <span class="icon_loading"></span>
+                                Update Cart
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Subtotal <span id="subtotal">$@Model.Sum(x => x.Price * x.Quantity).ToString("F2")</span></li>
+                        <li>Total <span id="total">$@Model.Sum(x => x.Price * x.Quantity).ToString("F2")</span></li>
+                    </ul>
+                    <a asp-controller="Order" asp-action="Create" class="primary-btn">PROCEED TO CHECKOUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const quantityInputs = document.querySelectorAll(".quantity-input");
+            const subtotalElement = document.getElementById("subtotal");
+            const totalElement = document.getElementById("total");
+
+            quantityInputs.forEach(input => {
+                input.addEventListener("input", function () {
+                    const price = parseFloat(input.dataset.price);
+                    const quantity = parseInt(input.value);
+                    const row = input.closest("tr");
+                    const totalCell = row.querySelector(".shoping__cart__total");
+
+                    if (!isNaN(quantity) && quantity > 0) {
+                        const total = price * quantity;
+                        totalCell.textContent = `$${total.toFixed(2)}`;
+                        updateCartTotals();
+                    }
+                });
+            });
+
+            function updateCartTotals() {
+                let subtotal = 0;
+
+                quantityInputs.forEach(input => {
+                    const price = parseFloat(input.dataset.price);
+                    const quantity = parseInt(input.value);
+
+                    if (!isNaN(quantity) && quantity > 0) {
+                        subtotal += price * quantity;
+                    }
+                });
+
+                subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+                totalElement.textContent = `$${subtotal.toFixed(2)}`;
+            }
+        });
+    </script>
+}
